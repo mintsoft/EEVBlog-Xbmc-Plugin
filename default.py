@@ -47,6 +47,7 @@ def build_episodes_directory():
     listitem = xbmcgui.ListItem(label = name, iconImage = "", thumbnailImage = "")
     #listitem.setInfo( type = "Video", infoLabels = { "Title": name, "Director": __plugin__, "Studio": __plugin__, "Genre": "Video Blog", "Plot": plot[0], "Episode": "" } )
     if ep_url:
+      ep_url = re.sub('^https://','http://', ep_url)
       u = sys.argv[0] + "?mode=2&url=" + ep_url + "&name=" + name
       xbmcplugin.addDirectoryItem(handle = int(sys.argv[1]), url = u, listitem = listitem, isFolder = False)
       xbmcplugin.addSortMethod( handle = int(sys.argv[ 1 ]), sortMethod = xbmcplugin.SORT_METHOD_NONE )
@@ -83,7 +84,7 @@ def play_video(ep_url):
   except:
     xbmc.executebuiltin( "Dialog.Close(busydialog)" )
     xbmc.executebuiltin('Notification(Error,Something went wrong,2000)')
-    return
+    raise
   xbmc.Player().play(item=url, listitem=listitem)
 
 def get_params():
